@@ -39,7 +39,7 @@
 #   - середній бал по класу з кожного предмета (math, python, english);
 #   - ім'я студента з найвищим середнім балом (по трьох предметах).
 
-INPUT_FILE = "students_analysis/students.csv"
+INPUT_FILE = "students.csv"
 OUTPUT_FILE = "result.txt"
 
 # TODO 1: відкрийте INPUT_FILE через with open(...) as f:
@@ -56,8 +56,11 @@ sum_python = 0
 sum_english = 0
 thebest = ""
 highest = 0
+with open(INPUT_FILE, "r", encoding="utf-8") as f:
+    next(f)
     for line in f:
         line = line.strip()
+
         marks = line.split(",")
         name = marks[0]
         math = float(marks[1])
@@ -73,20 +76,20 @@ highest = 0
 #   - суми оцінок з кожного предмета та кількість студентів
 #   - найкращого студента (ім'я та його середній бал) — порівнюйте
 #     середній бал поточного студента з найкращим на цей момент
-    average = (math + python + english)/3
-    if average > highest:
-        highest = average
-        thebest = name
+        average = (math + python + english)/3
+        if average > highest:
+            highest = average
+            thebest = name
 # TODO 4: після циклу порахуйте середній бал по класу з кожного предмета
 #   (сума / кількість студентів)
-    try:
-        average_math =  math/students
-        average_python = python/students
-        average_english = english/students
-    except ZeroDivisionError:
-        average_math = 0
-        average_python = 0
-        average_english = 0
+try:
+    average_math =  sum_math/students
+    average_python = sum_python/students
+    average_english = sum_english/students
+except ZeroDivisionError:
+    average_math = 0
+    average_python = 0
+    average_english = 0
 
 # ============================================================
 # Крок 4. Збережіть результат у .txt файл
@@ -106,11 +109,11 @@ highest = 0
 # Запустіть скрипт (python analyze.py) і перевірте, що в папці
 # з'явився файл result.txt.
 result = (f"""Середній бал по класу:
-math: {average_math}
-python: {average_python}
-english: {average_english}
+math: {round(average_math, 1)}
+python: {round(average_python, 1)}
+english: {round(average_english, 1)}
 
-Найкращий студент: {thebest} ({highest})    
+Найкращий студент: {thebest} ({round(highest, 1)})    
 """)
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write(result)
